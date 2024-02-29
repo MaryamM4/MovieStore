@@ -57,7 +57,7 @@ public:
   for each movie in movies
     cout movie
   */
-  void displayInventory(DisplayInventoryOperation op);
+  void display();
 
 private:
   HashTable<Movie> movies;

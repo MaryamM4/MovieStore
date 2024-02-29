@@ -29,4 +29,6 @@ private:
   std::vector<Operation *> operations;
   Inventory inventory;
   CustomerDB customers;
+
+  void buildOperations(std::fstream &infile);
 };

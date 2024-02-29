@@ -63,3 +63,5 @@ void Inventory::buildInventory(std::fstream &infile) {
 
 // Gets a movie from the inventory
 Movie *Inventory::getMovie(Movie *movie) { return movies.get(movie); }
+
+void Inventory::display() { movies.display(); }

@@ -19,10 +19,32 @@ public:
   // virtual void execute() = 0;
 };
 
-class BorrowOperation : public Operation {};
+class BorrowOperation : public Operation {
+public:
+  BorrowOperation(int customerID, int movieID)
+      : customerID(customerID), movieID(movieID);
 
-class ReturnOperation : public Operation {};
+private:
+  int customerID;
+  int movieID;
+};
+
+class ReturnOperation : public Operation {
+public:
+  ReturnOperation(int customerID, int movieID;)
+      : customerID(customerID), movieID(movieID) {}
+
+private:
+  int customerID;
+  int movieID;
+};
 
 class DisplayInventoryOperation : public Operation {};
 
-class DisplayCustomerHistoryOperation : public Operation {};
+class DisplayCustomerHistoryOperation : public Operation {
+public:
+  DisplayCustomerHistoryOperation(int customerID) : customerID(customerID) {}
+
+private:
+  int customerID;
+};
