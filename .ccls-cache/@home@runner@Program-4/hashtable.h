@@ -9,9 +9,14 @@
 
 #pragma once
 
+template <typename T> struct TableItem {
+  T *item = nullptr;
+  T *nextItem = nullptr;
+};
+
 template <typename T> class HashTable {
 public:
-  HashTable(); // Constructor. Initializes all ptrs in hashtable to nullptr.
+  HashTable(); // Constructor. Initializes to empty TableItems.
   ~HashTable();
 
   // Add, remove, and get rely on hash function to locate it in the hastable.
@@ -27,7 +32,7 @@ public:
 
 private:
   static const int MAXSIZE = 100; // Maximum size of the hash table.
-  T *hashtable[]; // Array of pointers to items in the hash table.
+  TableItem<T> **hashtable; // Array of pointers to items in the hash table.
 
   // Returns the index for an item, but does not store it.
   int hash(const T *item);

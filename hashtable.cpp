@@ -1,30 +1,55 @@
 #include "hashtable.h"
+
+#include <iostream>
 #include <type_traits>
 
 // Default constructor.
 // Initializes array to nullptr of MAXSIZE.
 template <typename T> HashTable<T>::HashTable() {
-  T *hashtable[MAXSIZE] = {nullptr};
+  hashtable = new TableItem<T> *[MAXSIZE]();
 }
 
 // Deconstructor
 template <typename T> HashTable<T>::~HashTable() {
-  for (int i = 0; i < MAXSIZE; ++i) {
-    delete hashtable[i];
-    hashtable[i] = nullptr;
+  for (int i = 0; i < MAXSIZE; i++) {
+    TableItem<T> *currItem = hashtable[i];
+
+    while (currItem->item != nullptr) {
+      TableItem<T> *nextItem = currItem->nextItem;
+      delete currItem;
+      currItem = nextItem;
+    }
+
+    // delete hashtable[i];
+    // hashtable[i] = nullptr;
   }
+
+  delete[] hashtable;
 }
 
 // Add item to the hash table.
 // Returns false on fail
 template <typename T> bool HashTable<T>::add(T *item) {
+  std::cout << "Added item: " << item << std::endl;
+  /*
   int idx = hash(item);
 
-  if (idx == -1) { // hash function returns -1 if unable to hash.
+  if (idx < 0 || idx > MAXSIZE) { // hash function returns -1 if unable to hash.
     return false;
   }
 
-  hashtable[idx] = item;
+  TableItem<T> *currItem = hashtable[idx];
+  TableItem<T> *prevItem = nullptr;
+
+  while (currItem->item != nullptr) {
+    prevItem = currItem;
+    currItem = currItem->nextItem;
+    prevItem->nextItem = currItem;
+  }
+
+  currItem->item = item;
+  currItem->nextItem = new TableItem<T>;
+  */
   return true;
 }
 

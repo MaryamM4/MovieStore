@@ -22,7 +22,10 @@ public:
 class BorrowOperation : public Operation {
 public:
   BorrowOperation(int customerID, int movieID)
-      : customerID(customerID), movieID(movieID);
+      : customerID(customerID), movieID(movieID) {}
+
+  int getCustomerID();
+  int getMovieID();
 
 private:
   int customerID;
@@ -31,8 +34,11 @@ private:
 
 class ReturnOperation : public Operation {
 public:
-  ReturnOperation(int customerID, int movieID;)
+  ReturnOperation(int customerID, int movieID)
       : customerID(customerID), movieID(movieID) {}
+
+  int getCustomerID();
+  int getMovieID();
 
 private:
   int customerID;
@@ -44,6 +50,7 @@ class DisplayInventoryOperation : public Operation {};
 class DisplayCustomerHistoryOperation : public Operation {
 public:
   DisplayCustomerHistoryOperation(int customerID) : customerID(customerID) {}
+  int getCustomerID();
 
 private:
   int customerID;

@@ -27,6 +27,7 @@ public:
 
   // Gets a movie from the inventory
   Movie *getMovie(Movie *movie);
+  Movie *getMovie(int movieID);
 
   // Borrow a movie from the inventory.
   // // Returns true if the movie was borrowed successfully, false otherwise.
@@ -38,7 +39,7 @@ public:
   else
     return false
   */
-  bool borrowMovie(BorrowOperation op);
+  bool borrowMovie(BorrowOperation *op);
 
   // Return a movie to the inventory.
   // Returns true if the movie was returned successfully, false otherwise.
@@ -50,7 +51,7 @@ public:
   else
     return false
   */
-  bool returnMovie(ReturnOperation op);
+  bool returnMovie(ReturnOperation *op);
 
   // Displays inventory
   /*

@@ -15,18 +15,33 @@ void Store::initFromFiles(std::string movies_filename,
 
   // Build customer database
   file.open(customers_filename);
-  customers.buildDB(file);
-  file.close();
+  if (file.is_open()) {
+    customers.buildDB(file);
+    file.close();
+
+  } else {
+    std::cout << "Invalid customers build file: " << customers_filename
+              << std::endl;
+  }
 
   // Build movie inventory
   file.open(movies_filename);
-  inventory.buildInventory(file);
-  file.close();
+  if (file.is_open()) {
+    inventory.buildInventory(file);
+    file.close();
+
+  } else {
+    std::cout << "Invalid movies build file: " << movies_filename << std::endl;
+  }
 
   // Build operations vector
   file.open(movies_filename);
+  if (file.is_open()) {
   buildOperations(file);
   file.close();
+    } else {
+      std::cout << "Invalid operations build file: " << operations_filename << std::endl;
+    }
 }
 
 /**
@@ -62,7 +77,6 @@ void Store::buildOperations(std::fstream &infile) {
 
       case 'B': // Borrow
         if (iss >> customerID >> mediaType >> movieType) {
-          
         }
 
       case 'R': // Return

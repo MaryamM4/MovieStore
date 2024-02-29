@@ -1,8 +1,5 @@
-//
-// Created by Andrew on 2/19/2024.
-//
-
 #include "inventory.h"
+#include "customer.h"
 
 #include <fstream>
 #include <iostream>
@@ -61,7 +58,45 @@ void Inventory::buildInventory(std::fstream &infile) {
   }
 }
 
-// Gets a movie from the inventory
+/**
+ * @return A pointer to a movie from the inventory
+ *         or nullptr if movie not found.
+ */
 Movie *Inventory::getMovie(Movie *movie) { return movies.get(movie); }
+Movie *Inventory::getMovie(int movieID) { return movies.getByID(movieID); }
 
+/**
+ *
+ */
 void Inventory::display() { movies.display(); }
+
+/**
+ *
+ * @note   Does not check if customer is valid.
+ * @return True if movie was succesfully borrowed, or false otherwise.
+ */
+bool Inventory::borrowMovie(BorrowOperation *op) {
+  Movie *movie = getMovie(op->getMovieID());
+  int customerID = op->getCustomerID();
+
+  if (movie == nullptr) {
+    // TODO: Offer alternative.
+    return false;
+  }
+
+  // TO
+  return false;
+}
+
+/**
+ *
+ * @return True if movie was succesfully returned, or false otherwise.
+ */
+bool Inventory::returnMovie(ReturnOperation *op) {
+  int movieID = op->getMovieID();
+  int customerID = op->getCustomerID();
+
+  // TODO
+
+  return false;
+}
