@@ -36,7 +36,7 @@ template <typename T> HashTable<T>::~HashTable() {
 // Add item to the hash table.
 // Returns false on fail
 template <typename T> bool HashTable<T>::add(T *item) {
-  /*
+
   int idx = hash(item);
 
   // The hash function returns -1 if unable to hash.
@@ -54,8 +54,6 @@ template <typename T> bool HashTable<T>::add(T *item) {
   }
 
   hashtable[idx] = newItem;
-  */
-  std::cout << "HashTable added: " << item << std::endl; // DEL ME
 
   return true;
 }

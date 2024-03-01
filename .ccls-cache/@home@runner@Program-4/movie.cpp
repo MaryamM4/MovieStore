@@ -1,8 +1,6 @@
-//
-// Created by Andrew on 2/19/2024.
-//
-
 #include "movie.h"
+
+#include <iostream>
 
 using namespace std;
 
@@ -24,6 +22,10 @@ int Movie::getReleaseYear() const { return releaseYear; }
 Movie::MovieKind Movie::getKind() const { return kind; }
 
 int Movie::getID() const { return ID; }
+
+std::ostream &operator<<(std::ostream &os, const Movie &movie) {
+  return movie.display(os);
+}
 
 // ===================================
 
@@ -82,6 +84,12 @@ bool ComedyMovie::operator>=(const Movie &rhs) const {
   return *this > rhs || *this == rhs;
 }
 
+std::ostream &ComedyMovie::display(std::ostream &os) const {
+  os << "F, " << getStock() << ", " << getDirector() << ", " << getTitle()
+     << " " << getReleaseYear();
+  return os;
+}
+
 // ===================================
 
 DramaMovie::DramaMovie(int stock, std::string director, std::string title,
@@ -125,6 +133,12 @@ bool DramaMovie::operator<=(const Movie &rhs) const {
 
 bool DramaMovie::operator>=(const Movie &rhs) const {
   return *this > rhs || *this == rhs;
+}
+
+std::ostream &DramaMovie::display(std::ostream &os) const {
+  os << "F, " << getStock() << ", " << getDirector() << ", " << getTitle()
+     << " " << getReleaseYear();
+  return os;
 }
 
 // ===================================
@@ -176,4 +190,11 @@ bool ClassicMovie::operator<=(const Movie &rhs) const {
 
 bool ClassicMovie::operator>=(const Movie &rhs) const {
   return *this > rhs || *this == rhs;
+}
+
+std::ostream &ClassicMovie::display(std::ostream &os) const {
+  os << "F, " << getStock() << ", " << getDirector() << ", " << getTitle()
+     << ", " << getMajorActor() << " " << getReleaseMonth() << " "
+     << getReleaseYear();
+  return os;
 }

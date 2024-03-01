@@ -27,12 +27,18 @@ public:
   int getReleaseYear() const;
 
   int getID() const;
+  int determineID(); // Only call in constructor.
 
+  // Overloaded operators
   virtual bool operator<(const Movie &rhs) const = 0;
   virtual bool operator>(const Movie &rhs) const = 0;
   virtual bool operator==(const Movie &rhs) const = 0;
   virtual bool operator<=(const Movie &rhs) const = 0;
   virtual bool operator>=(const Movie &rhs) const = 0;
+
+  // << can't be overloaded as a pure virtual function.
+  virtual std::ostream &display(std::ostream &os) const = 0;
+  friend std::ostream &operator<<(std::ostream &os, const Movie &movie);
 
 private:
   int ID;
@@ -54,6 +60,8 @@ public:
   bool operator==(const Movie &rhs) const override;
   bool operator<=(const Movie &rhs) const override;
   bool operator>=(const Movie &rhs) const override;
+
+  std::ostream &display(std::ostream &os) const override;
 };
 
 class DramaMovie : public Movie {
@@ -69,6 +77,8 @@ public:
   bool operator==(const Movie &rhs) const override;
   bool operator<=(const Movie &rhs) const override;
   bool operator>=(const Movie &rhs) const override;
+
+  std::ostream &display(std::ostream &os) const override;
 };
 
 class ClassicMovie : public Movie {
@@ -85,6 +95,8 @@ public:
   bool operator==(const Movie &rhs) const override;
   bool operator<=(const Movie &rhs) const override;
   bool operator>=(const Movie &rhs) const override;
+
+  std::ostream &display(std::ostream &os) const override;
 
 private:
   int releaseMonth;
