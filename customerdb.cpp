@@ -23,15 +23,15 @@ void CustomerDB::buildDB(std::fstream &infile) {
 
     if (!(iss >> UID >> lastName >> firstName)) {
       std::cout << "Failed to add customer:\n" << currLine << "\n" << std::endl;
-      continue; // Skip line on fail
+      continue;
 
-    } else { // DELETE ME
+    } else { // DELETE PRINT
       std::cout << "Added customer " << UID << " " << lastName << " "
                 << firstName << std::endl;
-    }
 
-    Customer *newCustomer = new Customer(UID, firstName, lastName);
-    customers.add(newCustomer);
+      Customer *newCustomer = new Customer(UID, firstName, lastName);
+      customers.add(newCustomer);
+    }
   }
 }
 

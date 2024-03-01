@@ -7,72 +7,80 @@
 #include <type_traits>
 
 // Default constructor.
-// Initializes array to nullptr of MAXSIZE.
-template <typename T> HashTable<T>::HashTable() {
-  hashtable = new TableItem<T> *[MAXSIZE]();
-}
+template <typename T> HashTable<T>::HashTable() {}
 
 // Deconstructor
 template <typename T> HashTable<T>::~HashTable() {
-  std::cout << "HashTable deconstructor." << std::endl;
-  /*
-  for (int i = 0; i < MAXSIZE; i++) {
-    TableItem<T> *currItem = hashtable[i];
+  TableItem<T> *currItem;
+  TableItem<T> *nextItem;
 
+  // Iterate through the array
+  for (int i = 0; i < HASHTABLE_SIZE; i++) {
+    currItem = hashtable[i];
+
+    // Iterate through each linked-list
     while (currItem->item != nullptr) {
-      TableItem<T> *nextItem = currItem->nextItem;
-      delete currItem;
+      nextItem = currItem->nextItem;
+
+      delete currItem;          // Free memory
+      currItem->item = nullptr; // De-allocate pointer
+
       currItem = nextItem;
     }
 
     // delete hashtable[i];
     // hashtable[i] = nullptr;
   }
-
-  delete[] hashtable;
-  */
 }
 
 // Add item to the hash table.
 // Returns false on fail
 template <typename T> bool HashTable<T>::add(T *item) {
-  std::cout << "HashTable added item: " << item << "\n" << std::endl;
-  /*
   int idx = hash(item);
 
-  if (idx < 0 || idx > MAXSIZE) { // hash function returns -1 if unable to hash.
+  // The hash function returns -1 if unable to hash.
+  if (idx < 0 || idx > HASHTABLE_SIZE) {
     return false;
   }
 
-  TableItem<T> *currItem = hashtable[idx];
-  TableItem<T> *prevItem = nullptr;
+  TableItem<T> *newItem = new TableItem<T>();
+  newItem->item = item;
 
-  while (currItem->item != nullptr) {
-    prevItem = currItem;
-    currItem = currItem->nextItem;
-    prevItem->nextItem = currItem;
+  if (hashtable[idx]->item == nullptr) {
+    newItem->nextItem = nullptr;
+  } else {
+    newItem->nextItem = hashtable[idx];
   }
 
-  currItem->item = item;
-  currItem->nextItem = new TableItem<T>;
-  */
+  hashtable[idx] = newItem;
+
   return true;
 }
 
 // Remove item from the hash table.
 // Returns false on fail.
 template <typename T> bool HashTable<T>::remove(T *item) {
-  std::cout << "Hashtable deleted item: " << std::endl;
-  /*
   int idx = hash(item);
 
-  if (idx == -1) { // hash function returns -1 if unable to hash.
+  // The hash function returns -1 if unable to hash.
+  if (idx == -1 || idx > HASHTABLE_SIZE) {
     return false;
   }
 
-  delete hashtable[idx];
-  hashtable[idx] = nullptr;
-  */
+  printListAtIdx(idx); // DELETE ME
+
+  TableItem<T> *currItem = hashtable[idx];
+  TableItem<T> *prevItem = currItem;
+
+  while (currItem != nullptr && currItem->item != nullptr &&
+         currItem->item != item) {
+    prevItem = currItem;
+    currItem = currItem->nextItem;
+  }
+
+  prevItem->nextItem = currItem->nextItem;
+
+  printListAtIdx(idx); // DELETE ME
 
   return true;
 }
@@ -140,7 +148,24 @@ template <typename T> int HashTable<T>::hash(const T *item) {
  */
 template <typename T> int HashTable<T>::hashID(int ID) {
   // TODO: Placeholder
-  return ID % MAXSIZE;
+  return ID % HASHTABLE_SIZE;
+}
+
+template <typename T> void HashTable<T>::printListAtIdx(int idx) {
+  if (idx < 0 || idx > HASHTABLE_SIZE) {
+    return;
+  }
+
+  std::cout << "HashTable list at idx " << idx << ":" << std::endl;
+
+  TableItem<T> *currItem = hashtable[idx];
+  int i = 0;
+
+  while (currItem != nullptr && currItem->item != nullptr) {
+    std::cout << "[" << i << ": " << currItem->item << "]-> ";
+    i++;
+  }
+  std::cout << std::endl;
 }
 
 template class HashTable<Movie>;

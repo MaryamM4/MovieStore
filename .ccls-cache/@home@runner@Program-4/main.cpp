@@ -16,11 +16,3 @@ int main() {
 
   return 0;
 }
-
-void parseCommands(std::fstream &file, std::vector<Operation *> &commands) {
-  std::string line;
-  while (std::getline(file, line)) {
-    Operation *operation = Operation::buildCommand(line);
-    commands.push_back(operation);
-  }
-}
