@@ -36,10 +36,11 @@ template <typename T> HashTable<T>::~HashTable() {
 // Add item to the hash table.
 // Returns false on fail
 template <typename T> bool HashTable<T>::add(T *item) {
+  /*
   int idx = hash(item);
 
   // The hash function returns -1 if unable to hash.
-  if (idx < 0 || idx > HASHTABLE_SIZE) {
+  if (outOfRange(idx)) {
     return false;
   }
 
@@ -53,6 +54,8 @@ template <typename T> bool HashTable<T>::add(T *item) {
   }
 
   hashtable[idx] = newItem;
+  */
+  std::cout << "HashTable added: " << item << std::endl; // DEL ME
 
   return true;
 }
@@ -63,10 +66,11 @@ template <typename T> bool HashTable<T>::remove(T *item) {
   int idx = hash(item);
 
   // The hash function returns -1 if unable to hash.
-  if (idx == -1 || idx > HASHTABLE_SIZE) {
+  if (outOfRange(idx)) {
     return false;
   }
 
+  std::cout << "\nHashTable Deletion Before & After:" << std::endl;
   printListAtIdx(idx); // DELETE ME
 
   TableItem<T> *currItem = hashtable[idx];
@@ -81,6 +85,7 @@ template <typename T> bool HashTable<T>::remove(T *item) {
   prevItem->nextItem = currItem->nextItem;
 
   printListAtIdx(idx); // DELETE ME
+  std::cout << std::endl;
 
   return true;
 }
@@ -152,20 +157,37 @@ template <typename T> int HashTable<T>::hashID(int ID) {
 }
 
 template <typename T> void HashTable<T>::printListAtIdx(int idx) {
-  if (idx < 0 || idx > HASHTABLE_SIZE) {
+  if (outOfRange(idx)) {
     return;
   }
-
-  std::cout << "HashTable list at idx " << idx << ":" << std::endl;
 
   TableItem<T> *currItem = hashtable[idx];
   int i = 0;
 
-  while (currItem != nullptr && currItem->item != nullptr) {
-    std::cout << "[" << i << ": " << currItem->item << "]-> ";
-    i++;
+  if (currItem == nullptr || currItem->item == nullptr) {
+    std::cout << "[   ]-> ";
+
+  } else {
+
+    while (currItem != nullptr && currItem->item != nullptr) {
+      std::cout << "[" << i << ": " << currItem->item << "]-> ";
+      i++;
+    }
   }
   std::cout << std::endl;
+}
+
+template <typename T> void HashTable<T>::printTable() {
+  for (int i = 0; i < HASHTABLE_SIZE; i++) {
+    printListAtIdx(i);
+  }
+}
+
+/**
+ * @return True if 0 <= idx < HASHTABLE_SIZE, false otherwise.
+ */
+template <typename T> bool HashTable<T>::outOfRange(int idx) {
+  return (0 > idx || idx >= HASHTABLE_SIZE);
 }
 
 template class HashTable<Movie>;

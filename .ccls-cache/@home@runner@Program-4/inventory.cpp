@@ -10,42 +10,66 @@ Inventory::Inventory() { std::cout << "Inventory init." << std::endl; }
 Inventory::~Inventory() { std::cout << "Inventory destructor." << std::endl; }
 
 void Inventory::buildInventory(std::fstream &infile) {
-  char movieType;
-  std::string director;
-  std::string title;
-  std::string majorActor;
-  int releaseYear;
-  int releaseMonth;
-  int stock;
+  std::string movieTypeStr = "";
+  std::string director = "";
+  std::string title = "";
+  std::string majorActor = "";
+  std::string releaseYearStr = "";
+  std::string releaseMonthStr = "";
+  std::string stockStr = "";
+  int stock = 0;
+  int releaseYear = 0;
+  int releaseMonth = 0;
+
+  Movie *newMovie;
 
   bool invalidLine;
   std::string currLine;
   while (std::getline(infile, currLine)) {
-    Movie *newMovie;
-
-    std::istringstream iss(currLine);
     invalidLine = true;
 
-    if (iss >> movieType >> stock >> director >> title) {
-      switch (movieType) {
+    std::istringstream iss(currLine);
+
+    if (std::getline(iss, movieTypeStr, ',') &&
+        std::getline(iss, stockStr, ',') && std::getline(iss, director, ',') &&
+        std::getline(iss, title, ',')) {
+
+      // Convert strings to ints
+      stock = std::stoi(stockStr);
+
+      switch (movieTypeStr[0]) {
       case 'F': // Comedy
-        if (iss >> releaseYear) {
+        if (std::getline(iss, releaseYearStr, ',')) {
+          releaseYear = std::stoi(releaseYearStr);
+
           newMovie = new ComedyMovie(stock, director, title, releaseYear);
           invalidLine = false;
         }
+        break;
 
       case 'D': // Drama
-        if (iss >> releaseYear) {
+        if (std::getline(iss, releaseYearStr, ',')) {
+          releaseYear = std::stoi(releaseYearStr);
+
           newMovie = new DramaMovie(stock, director, title, releaseYear);
           invalidLine = false;
         }
+        break;
 
       case 'C': // Classic
-        if (iss >> majorActor >> releaseMonth >> releaseYear) {
+        if (std::getline(iss, majorActor, ',') &&
+            std::getline(iss, releaseMonthStr, ',') &&
+            std::getline(iss, releaseYearStr, ',')) {
+
+          // Convert strings to ints
+          releaseMonth = std::stoi(releaseMonthStr);
+          releaseYear = std::stoi(releaseYearStr);
+
           newMovie = new ClassicMovie(stock, director, title, majorActor,
                                       releaseMonth, releaseYear);
           invalidLine = false;
         }
+        break;
 
       default:
         invalidLine = true;
@@ -57,9 +81,6 @@ void Inventory::buildInventory(std::fstream &infile) {
 
     } else {
       movies.add(newMovie);
-      std::cout << "Sucesffully added movie:\n"
-                << currLine << "\n"
-                << std::endl; // DELETE ME
     }
   }
 }

@@ -40,6 +40,10 @@ private:
   int hash(const T *item);
   int hashID(int ID);
 
+  // Helper function. Returns true if 0 <= idx < HASHTABLE_SIZE
+  bool outOfRange(int idx);
+
   // Helper function for testing purposes.
   void printListAtIdx(int idx);
+  void printTable();
 };
