@@ -37,6 +37,4 @@ private:
   // Returns the index for an item, but does not store it.
   int hash(const T *item);
   int hashID(int ID);
-
-  int probeNext(int currIdx, int i);
 };

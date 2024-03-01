@@ -13,10 +13,10 @@ public:
   // Constructor initializes a UID.
   Customer(int userID, std::string firstname, std::string lastname);
 
-  int getID() { return UID; }
+  int getID() const;
 
 private:
+  int UID; // 4-digit identification
   std::string firstName;
   std::string lastName;
-  int UID; // 4-digit identification
 };

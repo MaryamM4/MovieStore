@@ -8,8 +8,10 @@ using namespace std;
 
 Movie::Movie(int stock, string director, string title, int releaseYear,
              Movie::MovieKind kind)
-    : stock(stock), director(director), title(title), releaseYear(releaseYear),
-      kind(kind) {}
+    : stock(stock), director(director), title(title), kind(kind),
+      releaseYear(releaseYear) {
+  ID = 0; // TEMP, REMOVE ME
+}
 
 int Movie::getStock() const { return stock; }
 
@@ -20,6 +22,8 @@ string Movie::getTitle() const { return title; }
 int Movie::getReleaseYear() const { return releaseYear; }
 
 Movie::MovieKind Movie::getKind() const { return kind; }
+
+int Movie::getID() const { return ID; }
 
 // ===================================
 

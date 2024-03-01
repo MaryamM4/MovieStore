@@ -12,6 +12,7 @@
 class Inventory {
 public:
   Inventory();
+  ~Inventory();
 
   // Builds the inventory from a file.
   // Returns a pointer to the movie if found, nullptr otherwise.

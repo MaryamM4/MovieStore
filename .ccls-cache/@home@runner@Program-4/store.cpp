@@ -14,8 +14,13 @@ void Store::initFromFiles(std::string movies_filename,
   std::fstream file;
 
   // Build customer database
+  std::cout << "\n===========================" << std::endl; // DELETE ME
+  std::cout << "======== CUSTOMERS ========" << std::endl;   // DELETE ME
+  std::cout << "---------------------------\n" << std::endl; // DELETE ME
   file.open(customers_filename);
   if (file.is_open()) {
+    std::cout << "Store succesfully opened customer file.\n"
+              << std::endl; // DELETE ME
     customers.buildDB(file);
     file.close();
 
@@ -25,7 +30,12 @@ void Store::initFromFiles(std::string movies_filename,
   }
 
   // Build movie inventory
+  std::cout << "\n===========================" << std::endl; // DELETE ME
+  std::cout << "========= MOVIES =========" << std::endl;    // DELETE ME
+  std::cout << "---------------------------\n" << std::endl; // DELETE ME
   file.open(movies_filename);
+  std::cout << "Store succesfully opened movie file.\n"
+            << std::endl; // DELETE ME
   if (file.is_open()) {
     inventory.buildInventory(file);
     file.close();
@@ -35,13 +45,19 @@ void Store::initFromFiles(std::string movies_filename,
   }
 
   // Build operations vector
+  std::cout << "\n===========================" << std::endl; // DELETE ME
+  std::cout << "======== OPERATIONS ========" << std::endl;  // DELETE ME
+  std::cout << "---------------------------\n" << std::endl; // DELETE ME
   file.open(movies_filename);
   if (file.is_open()) {
-  buildOperations(file);
-  file.close();
-    } else {
-      std::cout << "Invalid operations build file: " << operations_filename << std::endl;
-    }
+    std::cout << "Store succesfully opened operation file.\n"
+              << std::endl; // DELETE ME
+    buildOperations(file);
+    file.close();
+  } else {
+    std::cout << "Invalid operations build file: " << operations_filename
+              << std::endl;
+  }
 }
 
 /**
@@ -77,13 +93,28 @@ void Store::buildOperations(std::fstream &infile) {
 
       case 'B': // Borrow
         if (iss >> customerID >> mediaType >> movieType) {
+          // TODO
+          invalidLine = false;
         }
 
       case 'R': // Return
+        if (iss >> customerID >> mediaType >> movieType) {
+          // TODO
+          invalidLine = false;
+        }
 
       default: // Invalid command type.
         invalidLine = true;
       }
+    }
+
+    if (invalidLine) {
+      std::cout << "Invalid operation file line:\n"
+                << currLine << "\n"
+                << std::endl;
+
+    } else { // DELETE valid print. This is for testing.
+      std::cout << "Valid op file line:\n" << currLine << "\n" << std::endl;
     }
   }
 }

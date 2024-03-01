@@ -6,6 +6,9 @@
 #include <sstream>
 #include <string>
 
+Inventory::Inventory() { std::cout << "Inventory init." << std::endl; }
+Inventory::~Inventory() { std::cout << "Inventory destructor." << std::endl; }
+
 void Inventory::buildInventory(std::fstream &infile) {
   char movieType;
   std::string director;
@@ -50,10 +53,13 @@ void Inventory::buildInventory(std::fstream &infile) {
     }
 
     if (invalidLine) {
-      std::cout << "Failed to add movie: " << currLine << std::endl;
+      std::cout << "Failed to add movie:\n" << currLine << "\n" << std::endl;
 
     } else {
       movies.add(newMovie);
+      std::cout << "Sucesffully added movie:\n"
+                << currLine << "\n"
+                << std::endl; // DELETE ME
     }
   }
 }
@@ -76,6 +82,8 @@ void Inventory::display() { movies.display(); }
  * @return True if movie was succesfully borrowed, or false otherwise.
  */
 bool Inventory::borrowMovie(BorrowOperation *op) {
+  std::cout << "Borrow Movie" << std::endl;
+  /*
   Movie *movie = getMovie(op->getMovieID());
   int customerID = op->getCustomerID();
 
@@ -85,6 +93,7 @@ bool Inventory::borrowMovie(BorrowOperation *op) {
   }
 
   // TO
+  */
   return false;
 }
 
@@ -93,10 +102,13 @@ bool Inventory::borrowMovie(BorrowOperation *op) {
  * @return True if movie was succesfully returned, or false otherwise.
  */
 bool Inventory::returnMovie(ReturnOperation *op) {
+  std::cout << "Return Movie" << std::endl;
+  /*
   int movieID = op->getMovieID();
   int customerID = op->getCustomerID();
 
   // TODO
+  */
 
   return false;
 }

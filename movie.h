@@ -26,7 +26,7 @@ public:
   MovieKind getKind() const;
   int getReleaseYear() const;
 
-  int getID() const { return ID; }
+  int getID() const;
 
   virtual bool operator<(const Movie &rhs) const = 0;
   virtual bool operator>(const Movie &rhs) const = 0;
