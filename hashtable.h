@@ -31,19 +31,18 @@ public:
   void display();
 
 private:
-  static const int HASHTABLE_SIZE =
-      101; // Maximum size of the hash table (prime).
-  TableItem<T> *hashtable[HASHTABLE_SIZE]; // Array of pointers to items in the
-                                           // hash table.
+  // Size of the hash table (prime).
+  static const int HASHTABLE_SIZE = 1009; // 101 or 1009
+  TableItem<T> *hashtable[HASHTABLE_SIZE];
 
-  // Returns the index for an item, but does not store it.
-  int hash(const T *item);
-  int hashID(int ID);
+  // Returns the index for an item based on ID. (Does not change hashtable)
+  int hash(const T *item) const;
+  int hashID(int ID) const;
 
   // Helper function. Returns true if 0 <= idx < HASHTABLE_SIZE
   bool outOfRange(int idx);
 
-  // Helper function for testing purposes.
+  // Helper print functions for testing purposes.
   void printListAtIdx(int idx);
   void printTable();
 };

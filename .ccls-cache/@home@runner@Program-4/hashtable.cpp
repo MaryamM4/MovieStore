@@ -36,7 +36,6 @@ template <typename T> HashTable<T>::~HashTable() {
 // Add item to the hash table.
 // Returns false on fail
 template <typename T> bool HashTable<T>::add(T *item) {
-
   int idx = hash(item);
 
   // The hash function returns -1 if unable to hash.
@@ -44,15 +43,12 @@ template <typename T> bool HashTable<T>::add(T *item) {
     return false;
   }
 
+  std::cout << "HashTable added " << *item << " at idx " << idx << ".\n"
+            << std::endl; // DELETE ME
+
   TableItem<T> *newItem = new TableItem<T>();
   newItem->item = item;
-
-  if (hashtable[idx]->item == nullptr) {
-    newItem->nextItem = nullptr;
-  } else {
-    newItem->nextItem = hashtable[idx];
-  }
-
+  newItem->nextItem = hashtable[idx];
   hashtable[idx] = newItem;
 
   return true;
@@ -133,7 +129,7 @@ template <typename T> void HashTable<T>::display() {
  * @return An int representing the array index the item should be stored at.
  *         Returns -1 if item is invlaid, or if unable to hash it's ID.
  */
-template <typename T> int HashTable<T>::hash(const T *item) {
+template <typename T> int HashTable<T>::hash(const T *item) const {
   if (!(std::is_member_function_pointer<decltype(&T::getID)>::value)) {
     return -1;
   }
@@ -149,11 +145,15 @@ template <typename T> int HashTable<T>::hash(const T *item) {
  * @return An int representing the array index the item should be stored at.
  *         Returns -1 if unable to hash.
  */
-template <typename T> int HashTable<T>::hashID(int ID) {
+template <typename T> int HashTable<T>::hashID(int ID) const {
   // TODO: Placeholder
   return ID % HASHTABLE_SIZE;
 }
 
+/**
+ * Prints chain at given table index.
+ * Does not print anything for empty cells or invalid idx.
+ */
 template <typename T> void HashTable<T>::printListAtIdx(int idx) {
   if (outOfRange(idx)) {
     return;
@@ -162,10 +162,7 @@ template <typename T> void HashTable<T>::printListAtIdx(int idx) {
   TableItem<T> *currItem = hashtable[idx];
   int i = 0;
 
-  if (currItem == nullptr || currItem->item == nullptr) {
-    std::cout << "[   ]-> ";
-
-  } else {
+  if (currItem != nullptr && currItem->item != nullptr) {
 
     while (currItem != nullptr && currItem->item != nullptr) {
       std::cout << "[" << i << ": " << currItem->item << "]-> ";

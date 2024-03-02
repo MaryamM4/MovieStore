@@ -14,6 +14,10 @@ public:
   Customer(int userID, std::string firstname, std::string lastname);
 
   int getID() const;
+  std::string getFirstName() const;
+  std::string getLastName() const;
+
+  friend std::ostream &operator<<(std::ostream &os, const Customer &customer);
 
 private:
   int UID; // 4-digit identification
