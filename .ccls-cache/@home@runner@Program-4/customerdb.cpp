@@ -27,7 +27,11 @@ void CustomerDB::buildDB(std::fstream &infile) {
 
     } else {
       Customer *newCustomer = new Customer(UID, firstName, lastName);
-      customers.add(newCustomer);
+
+      // Don't add duplicates
+      if (customers.getByID(UID) == nullptr) {
+        customers.add(newCustomer);
+      }
     }
   }
 }

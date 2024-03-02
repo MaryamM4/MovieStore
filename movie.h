@@ -21,6 +21,9 @@ public:
   virtual ~Movie() = default;
 
   int getStock() const;
+  void addStock(); // Adds 1 to stock
+  bool remStock(); // Subtracts 1 from stock if > 0.
+
   std::string getDirector() const;
   std::string getTitle() const;
   MovieKind getKind() const;

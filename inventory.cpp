@@ -80,7 +80,14 @@ void Inventory::buildInventory(std::fstream &infile) {
       std::cout << "Failed to add movie:\n" << currLine << "\n" << std::endl;
 
     } else {
-      movies.add(newMovie);
+      Movie *movieInTable = movies.getByID(newMovie->getID());
+
+      if (movieInTable == nullptr) {
+        movies.add(newMovie);
+
+      } else {
+        // movieInTable->addStock();
+      }
     }
   }
 }

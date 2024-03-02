@@ -19,7 +19,7 @@ template <typename T> HashTable<T>::~HashTable() {
     currItem = hashtable[i];
 
     // Iterate through each linked-list
-    while (currItem->item != nullptr) {
+    while (currItem != nullptr) {
       nextItem = currItem->nextItem;
 
       delete currItem;          // Free memory
@@ -27,9 +27,6 @@ template <typename T> HashTable<T>::~HashTable() {
 
       currItem = nextItem;
     }
-
-    // delete hashtable[i];
-    // hashtable[i] = nullptr;
   }
 }
 
@@ -61,12 +58,9 @@ template <typename T> bool HashTable<T>::remove(T *item) {
   int idx = hash(item);
 
   // The hash function returns -1 if unable to hash.
-  if (outOfRange(idx)) {
+  if (outOfRange(idx) || (hashtable[idx] == nullptr)) {
     return false;
   }
-
-  std::cout << "\nHashTable Deletion Before & After:" << std::endl;
-  printListAtIdx(idx); // DELETE ME
 
   TableItem<T> *currItem = hashtable[idx];
   TableItem<T> *prevItem = currItem;
@@ -79,27 +73,29 @@ template <typename T> bool HashTable<T>::remove(T *item) {
 
   prevItem->nextItem = currItem->nextItem;
 
-  printListAtIdx(idx); // DELETE ME
-  std::cout << std::endl;
-
   return true;
 }
 
 // ID must match the result of the item's getID method.
 // Returns nullptr on fail.
 template <typename T> T *HashTable<T>::getByID(int itemID) {
-  /*
   int idx = hashID(itemID);
 
-  if (idx == -1) { // hash function returns -1 if unable to hash.
+  // Hash function returns -1 if unable to hash.
+  if (outOfRange(idx)) {
     return nullptr;
   }
 
-  return hashtable[idx];
-  */
+  TableItem<T> *tableItem = hashtable[idx];
 
-  // TODO
-  return nullptr;
+  while (tableItem != nullptr && (tableItem->item->getID() != itemID)) {
+    tableItem = tableItem->nextItem;
+  }
+
+  if (tableItem == nullptr) {
+    return nullptr;
+  }
+  return tableItem->item;
 }
 
 // Get an item by its pointer.
@@ -173,6 +169,10 @@ template <typename T> void HashTable<T>::printListAtIdx(int idx) {
   std::cout << std::endl;
 }
 
+/**
+ * Prints HashTable
+ * Exclues empty table cells for space.
+ */
 template <typename T> void HashTable<T>::printTable() {
   for (int i = 0; i < HASHTABLE_SIZE; i++) {
     printListAtIdx(i);

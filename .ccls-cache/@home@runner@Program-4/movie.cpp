@@ -54,6 +54,19 @@ int Movie::hashStringToInt(std::string str, int digitLength) const {
 
 int Movie::getStock() const { return stock; }
 
+// Adds 1 to stock
+void Movie::addStock() { stock += 1; }
+
+// Subtracts 1 from stock if stock > 0.
+bool Movie::remStock() {
+  if (stock <= 0) {
+    return false;
+  }
+
+  stock -= 1;
+  return true;
+}
+
 string Movie::getDirector() const { return director; }
 
 string Movie::getTitle() const { return title; }
