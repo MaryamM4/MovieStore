@@ -23,4 +23,6 @@ private:
   int UID; // 4-digit identification
   std::string firstName;
   std::string lastName;
+
+  bool PRINT_ID; // If true, << displays ID as well
 };
