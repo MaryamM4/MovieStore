@@ -43,7 +43,8 @@ template <typename T> bool HashTable<T>::add(T *item) {
     return false;
   }
 
-  std::cout << "HashTable added " << *item << " at idx " << idx << ".\n"
+  std::cout << "[Idx: " << idx << "] HashTable Added:\n"
+            << *item << "\n"
             << std::endl; // DELETE ME
 
   TableItem<T> *newItem = new TableItem<T>();

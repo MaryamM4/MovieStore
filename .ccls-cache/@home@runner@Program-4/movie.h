@@ -44,6 +44,8 @@ public:
 
 private:
   int ID;
+  bool PRINT_ID; // If true, << displays ID as well
+
   int stock = 0;
   std::string director;
   std::string title;

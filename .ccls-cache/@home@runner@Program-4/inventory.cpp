@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 
-Inventory::Inventory() { std::cout << "Inventory init." << std::endl; }
-Inventory::~Inventory() { std::cout << "Inventory destructor." << std::endl; }
+Inventory::Inventory() {}
+Inventory::~Inventory() {}
 
 void Inventory::buildInventory(std::fstream &infile) {
   std::string movieTypeStr = "";

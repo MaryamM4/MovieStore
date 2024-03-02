@@ -12,7 +12,7 @@ Movie::Movie(int stock, string director, string title, int releaseYear,
       releaseYear(releaseYear) {
 
   ID = determineID();
-  std::cout << "Movie ID: " << ID << std::endl; // DELETE ME
+  PRINT_ID = true; // If true, << also prints ID.
 }
 
 /**
@@ -65,7 +65,15 @@ Movie::MovieKind Movie::getKind() const { return kind; }
 int Movie::getID() const { return ID; }
 
 std::ostream &operator<<(std::ostream &os, const Movie &movie) {
-  return movie.display(os);
+
+  if (movie.PRINT_ID) {
+    os << std::string("[ID: ") << std::to_string(movie.getID())
+       << std::string("] ");
+  }
+
+  movie.display(os);
+
+  return os;
 }
 
 // ===================================

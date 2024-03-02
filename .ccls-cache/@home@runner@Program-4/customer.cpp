@@ -16,12 +16,13 @@ std::string Customer::getFirstName() const { return firstName; }
 std::string Customer::getLastName() const { return lastName; }
 
 std::ostream &operator<<(std::ostream &os, const Customer &customer) {
-  os << customer.getFirstName() << std::string(" ") << customer.getLastName();
 
   if (customer.PRINT_ID) {
-    os << std::string(" [") << std::to_string(customer.getID())
-       << std::string("]");
+    os << std::string("[ID: ") << std::to_string(customer.getID())
+       << std::string("] ");
   }
+
+  os << customer.getFirstName() << std::string(" ") << customer.getLastName();
 
   return os;
 }
