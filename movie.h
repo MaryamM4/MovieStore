@@ -50,6 +50,8 @@ public:
   virtual std::ostream &display(std::ostream &os) const;
   friend std::ostream &operator<<(std::ostream &os, const Movie &movie);
 
+  char getKindChars(int idx) const;
+
 private:
   int ID;
   bool PRINT_ID; // If true, << displays ID as well
@@ -59,6 +61,8 @@ private:
   std::string title;
   MovieKind kind = NONE;
   int releaseYear;
+
+  char kindChars[4] = {'-', 'F', 'D', 'C'};
 };
 
 class ComedyMovie : public Movie {

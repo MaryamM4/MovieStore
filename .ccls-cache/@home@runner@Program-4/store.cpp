@@ -154,7 +154,6 @@ void Store::buildOperations(std::fstream &infile) {
  * @pre operations vector should have already been built.
  */
 void Store::executeCommands() {
-  // bool operationValid;
   Operation *op;
 
   for (int i = 0; i < operations.size(); i++) {

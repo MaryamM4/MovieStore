@@ -78,8 +78,8 @@ Movie::MovieKind Movie::getKind() const { return kind; }
 int Movie::getID() const { return ID; }
 
 std::ostream &Movie::display(std::ostream &os) const {
-  os << getKind() << ", " << getStock() << ", " << getDirector() << ", "
-     << getTitle() << " " << getReleaseYear();
+  os << getKindChars(getKind()) << ", " << getStock() << ", " << getDirector()
+     << ", " << getTitle() << " " << getReleaseYear();
   return os;
 }
 
@@ -93,6 +93,13 @@ std::ostream &operator<<(std::ostream &os, const Movie &movie) {
   movie.display(os);
 
   return os;
+}
+
+char Movie::getKindChars(int idx) const {
+  if (idx < 0 || idx >= sizeof(kindChars)) {
+    return '-';
+  }
+  return kindChars[idx];
 }
 
 // ===================================
@@ -135,7 +142,6 @@ bool ComedyMovie::operator>(const Movie &rhs) const {
 
 bool ComedyMovie::operator==(const Movie &rhs) const {
   if (rhs.getKind() != COMEDY) {
-    std::cout << "rhs NOT comedy" << std::endl; // DELETE ME
     return false;
   }
 
@@ -250,9 +256,9 @@ bool ClassicMovie::operator>=(const Movie &rhs) const {
 }
 
 std::ostream &ClassicMovie::display(std::ostream &os) const {
-  os << getKind() << ", " << getStock() << ", " << getDirector() << ", "
-     << getTitle() << ", " << getMajorActor() << " " << getReleaseMonth() << " "
-     << getReleaseYear();
+  os << getKindChars(getKind()) << ", " << getStock() << ", " << getDirector()
+     << ", " << getTitle() << ", " << getMajorActor() << " "
+     << getReleaseMonth() << " " << getReleaseYear();
   return os;
 }
 
@@ -274,7 +280,6 @@ Movie *MovieFactory::determineMovie(std::string movieInfo) {
   int stock = 0;
   int releaseYear = 0;
   int releaseMonth = 0;
-  char movieType;
 
   Movie *movie = nullptr;
 
@@ -283,11 +288,6 @@ Movie *MovieFactory::determineMovie(std::string movieInfo) {
   if (std::getline(iss, movieTypeStr, ',') &&
       std::getline(iss, stockStr, ',') && std::getline(iss, director, ',') &&
       std::getline(iss, title, ',')) {
-
-    std::cout << movieTypeStr << stockStr << director << title << std::endl;
-    std::cout << movieTypeStr[0] << std::endl;
-    std::cout << movieTypeStr[1] << std::endl;
-    movieType = movieTypeStr[0];
 
     // Convert strings to ints
     stock = std::stoi(stockStr);
