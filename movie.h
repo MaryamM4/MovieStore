@@ -37,7 +37,7 @@ public:
   int getID() const;
   int determineID(); // Only call in constructor.
   // Helper method for determineID
-  int hashStringToInt(std::string str, int digitLength) const;
+  int hashStringToInt(std::string str) const;
 
   // Overloaded operators
   virtual bool operator<(const Movie &rhs) const = 0;

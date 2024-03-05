@@ -1,6 +1,7 @@
 #include "movie.h"
 
 #include <cmath>
+#include <cstdlib> // for abs()
 #include <functional>
 #include <iostream>
 
@@ -26,28 +27,31 @@ Movie::Movie(int stock, string director, string title, int releaseYear,
  */
 int Movie::determineID() {
   int kindDigit = static_cast<int>(kind);
-  kindDigit %= 10; // 1 digit only.
 
-  int titleDigits = hashStringToInt(getTitle(), 3);
+  int titleDigits = hashStringToInt(getTitle());
+  int dirDigits = hashStringToInt(getDirector());
+  int titleDirDigits = std::abs(titleDigits + dirDigits);
 
   int yrDigits = releaseYear % 1000; // Limit to 3 digits
 
   // Combine
-  std::string ID_str = std::to_string(kindDigit) + std::to_string(titleDigits) +
+  std::string ID_str = std::to_string(kindDigit) +
+                       std::to_string(titleDirDigits) +
                        std::to_string(yrDigits);
-  int fullID = std::stoi(ID_str);
 
+  long long unsigned int fullID = std::stoll(ID_str); // string to int
   return fullID;
 }
 
 /**
  * @return An int with digitLength didigts.
  */
-int Movie::hashStringToInt(std::string str, int digitLength) const {
+int Movie::hashStringToInt(std::string str) const {
   int digit = hash<std::string>{}(str);
+  digit = std::abs(digit);
 
   // Set size of digits to digit length
-  digit %= static_cast<int>(pow(10, (digitLength - 1)));
+  // digit %= static_cast<int>(pow(10, (digitLength - 1)));
 
   return digit;
 }
@@ -148,6 +152,7 @@ bool ComedyMovie::operator==(const Movie &rhs) const {
   // comedy movies (‘F’) sorted by Title, then Year it released
   const ComedyMovie &right = static_cast<const ComedyMovie &>(rhs);
   return this->getTitle() == right.getTitle() &&
+         this->getDirector() == right.getDirector()
          this->getReleaseYear() == right.getReleaseYear();
 }
 
