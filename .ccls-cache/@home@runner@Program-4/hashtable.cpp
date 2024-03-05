@@ -186,5 +186,16 @@ template <typename T> bool HashTable<T>::outOfRange(int idx) {
   return (0 > idx || idx >= HASHTABLE_SIZE);
 }
 
+/**
+ * @return true if item exists in HashTable,
+ *         false otheriwse.
+ */
+template <typename T> bool HashTable<T>::has(T *item) {
+  return (get(item) != nullptr);
+}
+template <typename T> bool HashTable<T>::hasID(int ID) {
+  return (getByID(ID) != nullptr);
+}
+
 template class HashTable<Movie>;
 template class HashTable<Customer>;

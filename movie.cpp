@@ -77,6 +77,12 @@ Movie::MovieKind Movie::getKind() const { return kind; }
 
 int Movie::getID() const { return ID; }
 
+std::ostream &Movie::display(std::ostream &os) const {
+  os << getKind() << ", " << getStock() << ", " << getDirector() << ", "
+     << getTitle() << " " << getReleaseYear();
+  return os;
+}
+
 std::ostream &operator<<(std::ostream &os, const Movie &movie) {
 
   if (movie.PRINT_ID) {
@@ -129,6 +135,7 @@ bool ComedyMovie::operator>(const Movie &rhs) const {
 
 bool ComedyMovie::operator==(const Movie &rhs) const {
   if (rhs.getKind() != COMEDY) {
+    std::cout << "rhs NOT comedy" << std::endl; // DELETE ME
     return false;
   }
 
@@ -144,12 +151,6 @@ bool ComedyMovie::operator<=(const Movie &rhs) const {
 
 bool ComedyMovie::operator>=(const Movie &rhs) const {
   return *this > rhs || *this == rhs;
-}
-
-std::ostream &ComedyMovie::display(std::ostream &os) const {
-  os << "F, " << getStock() << ", " << getDirector() << ", " << getTitle()
-     << " " << getReleaseYear();
-  return os;
 }
 
 // ===================================
@@ -195,12 +196,6 @@ bool DramaMovie::operator<=(const Movie &rhs) const {
 
 bool DramaMovie::operator>=(const Movie &rhs) const {
   return *this > rhs || *this == rhs;
-}
-
-std::ostream &DramaMovie::display(std::ostream &os) const {
-  os << "F, " << getStock() << ", " << getDirector() << ", " << getTitle()
-     << " " << getReleaseYear();
-  return os;
 }
 
 // ===================================
@@ -255,8 +250,83 @@ bool ClassicMovie::operator>=(const Movie &rhs) const {
 }
 
 std::ostream &ClassicMovie::display(std::ostream &os) const {
-  os << "F, " << getStock() << ", " << getDirector() << ", " << getTitle()
-     << ", " << getMajorActor() << " " << getReleaseMonth() << " "
+  os << getKind() << ", " << getStock() << ", " << getDirector() << ", "
+     << getTitle() << ", " << getMajorActor() << " " << getReleaseMonth() << " "
      << getReleaseYear();
   return os;
+}
+
+/**
+ * =================================
+ * Factory Class for Movie
+ */
+#include <sstream>
+
+Movie *MovieFactory::determineMovie(std::string movieInfo) {
+  std::string movieTypeStr = "";
+  std::string director = "";
+  std::string title = "";
+  std::string majorActor = "";
+  std::string actorFirstName = "";
+  std::string actorLastName = "";
+  std::string releaseYearStr = "";
+  std::string stockStr = "";
+  int stock = 0;
+  int releaseYear = 0;
+  int releaseMonth = 0;
+  char movieType;
+
+  Movie *movie = nullptr;
+
+  std::istringstream iss(movieInfo);
+
+  if (std::getline(iss, movieTypeStr, ',') &&
+      std::getline(iss, stockStr, ',') && std::getline(iss, director, ',') &&
+      std::getline(iss, title, ',')) {
+
+    std::cout << movieTypeStr << stockStr << director << title << std::endl;
+    std::cout << movieTypeStr[0] << std::endl;
+    std::cout << movieTypeStr[1] << std::endl;
+    movieType = movieTypeStr[0];
+
+    // Convert strings to ints
+    stock = std::stoi(stockStr);
+
+    switch (movieTypeStr[0]) {
+    case 'F': // Comedy
+      if (std::getline(iss, releaseYearStr, ',')) {
+        releaseYear = std::stoi(releaseYearStr);
+
+        movie = new ComedyMovie(stock, director, title, releaseYear);
+      }
+      break;
+
+    case 'D': // Drama
+      if (std::getline(iss, releaseYearStr, ',')) {
+        releaseYear = std::stoi(releaseYearStr);
+
+        movie = new DramaMovie(stock, director, title, releaseYear);
+      }
+      break;
+
+    case 'C': // Classic
+      if (iss >> actorFirstName >> actorLastName >> releaseMonth >>
+          releaseYear) {
+
+        majorActor = actorFirstName + " " + actorLastName;
+
+        movie = new ClassicMovie(stock, director, title, majorActor,
+                                 releaseMonth, releaseYear);
+      }
+      break;
+
+      /**
+      default:
+        std::cout << "Movie Genre Type '" << movieTypeStr[0] << "' is invalid."
+                  << std::endl;
+        */
+    }
+  }
+
+  return movie;
 }

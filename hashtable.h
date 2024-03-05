@@ -28,6 +28,9 @@ public:
   T *getByID(int itemID);
   T *get(T *item); // Get an item by its pointer.
 
+  bool has(T *item);
+  bool hasID(int ID);
+
   void display();
 
 private:

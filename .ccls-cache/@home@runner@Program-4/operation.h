@@ -17,6 +17,9 @@ public:
   // ect...
 
   // virtual void execute() = 0;
+
+  virtual std::ostream &display(std::ostream &os) const;
+  friend std::ostream &operator<<(std::ostream &os, const Operation &op);
 };
 
 class BorrowOperation : public Operation {
@@ -24,8 +27,10 @@ public:
   BorrowOperation(int customerID, int movieID)
       : customerID(customerID), movieID(movieID) {}
 
-  int getCustomerID();
-  int getMovieID();
+  int getCustomerID() const;
+  int getMovieID() const;
+
+  virtual std::ostream &display(std::ostream &os) const override;
 
 private:
   int customerID;
@@ -37,20 +42,29 @@ public:
   ReturnOperation(int customerID, int movieID)
       : customerID(customerID), movieID(movieID) {}
 
-  int getCustomerID();
-  int getMovieID();
+  int getCustomerID() const;
+  int getMovieID() const;
+
+  virtual std::ostream &display(std::ostream &os) const override;
 
 private:
   int customerID;
   int movieID;
 };
 
-class DisplayInventoryOperation : public Operation {};
+class DisplayInventoryOperation : public Operation {
+public:
+  friend std::ostream &operator<<(std::ostream &os, const Operation &op);
+
+  virtual std::ostream &display(std::ostream &os) const override;
+};
 
 class DisplayCustomerHistoryOperation : public Operation {
 public:
   DisplayCustomerHistoryOperation(int customerID) : customerID(customerID) {}
-  int getCustomerID();
+  int getCustomerID() const;
+
+  virtual std::ostream &display(std::ostream &os) const override;
 
 private:
   int customerID;

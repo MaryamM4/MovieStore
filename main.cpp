@@ -14,5 +14,7 @@ int main() {
   store->initFromFiles(movies_filename, customers_filename,
                        operations_filename);
 
+  store->executeCommands();
+
   return 0;
 }

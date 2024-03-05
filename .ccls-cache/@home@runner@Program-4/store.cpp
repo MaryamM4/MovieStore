@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 
 /**
  * Build customer database, movie inventory, and operations file
@@ -48,7 +49,7 @@ void Store::initFromFiles(std::string movies_filename,
   std::cout << "\n===========================" << std::endl; // DELETE ME
   std::cout << "======== OPERATIONS ========" << std::endl;  // DELETE ME
   std::cout << "---------------------------\n" << std::endl; // DELETE ME
-  file.open(movies_filename);
+  file.open(operations_filename);
   if (file.is_open()) {
     std::cout << "Store succesfully opened operation file.\n"
               << std::endl; // DELETE ME
@@ -61,47 +62,75 @@ void Store::initFromFiles(std::string movies_filename,
 }
 
 /**
- *
+ * @note buildOperations only determines if the info in each line
+ *       is valid. Does not check if customers/movies exist.
  */
 void Store::buildOperations(std::fstream &infile) {
   char operationType;
-  char movieType;
   char mediaType;
   int customerID;
+  int movieID;
 
   Operation *op;
   bool invalidLine;
   std::string currLine;
+
   while (std::getline(infile, currLine)) {
     invalidLine = true;
 
     std::istringstream iss(currLine);
+
     if (iss >> operationType) {
       switch (operationType) {
 
       case 'I': // Display inventory operation
         op = new DisplayInventoryOperation();
-        operations.push_back(op);
+
         invalidLine = false;
+        break;
 
       case 'H': // Display history of customer
         if (iss >> customerID) {
           op = new DisplayCustomerHistoryOperation(customerID);
-          operations.push_back(op);
+
           invalidLine = false;
         }
+
+        break;
 
       case 'B': // Borrow
-        if (iss >> customerID >> mediaType >> movieType) {
-          // TODO
-          invalidLine = false;
+        if (iss >> customerID >> mediaType) {
+          std::ostringstream oss;
+          Movie *movie = MovieFactory::determineMovie(oss.str());
+
+          if (movie != nullptr) {
+            movieID = movie->getID();
+            op = new BorrowOperation(customerID, movieID);
+
+            delete movie;
+            movie = nullptr;
+
+            invalidLine = false;
+          }
         }
+        break;
 
       case 'R': // Return
-        if (iss >> customerID >> mediaType >> movieType) {
-          // TODO
-          invalidLine = false;
+        if (iss >> customerID >> mediaType) {
+          std::ostringstream oss;
+          Movie *movie = MovieFactory::determineMovie(oss.str());
+
+          if (movie != nullptr) {
+            movieID = movie->getID();
+            op = new ReturnOperation(customerID, movieID);
+
+            delete movie;
+            movie = nullptr;
+
+            invalidLine = false;
+          }
         }
+        break;
 
       default: // Invalid command type.
         invalidLine = true;
@@ -113,8 +142,8 @@ void Store::buildOperations(std::fstream &infile) {
                 << currLine << "\n"
                 << std::endl;
 
-    } else { // DELETE valid print. This is for testing.
-      std::cout << "Valid op file line:\n" << currLine << "\n" << std::endl;
+    } else {
+      operations.push_back(op);
     }
   }
 }
@@ -124,4 +153,12 @@ void Store::buildOperations(std::fstream &infile) {
  *
  * @pre operations vector should have already been built.
  */
-void Store::executeCommands() {}
+void Store::executeCommands() {
+  // bool operationValid;
+  Operation *op;
+
+  for (int i = 0; i < operations.size(); i++) {
+    op = operations[i];
+    std::cout << "Executing operation: " << *op << std::endl; // DELETE ME
+  }
+}

@@ -1,10 +1,11 @@
-//
-// Created by Andrew on 2/19/2024.
-//
+/**
+ *
+ */
 
 #pragma once
 
 #include <string>
+#include <unordered_map>
 
 class Movie {
 public:
@@ -19,6 +20,10 @@ public:
   Movie(int stock, std::string director, std::string title, int releaseYear,
         MovieKind kind);
   virtual ~Movie() = default;
+
+  // static so we can call the method using the classname without needing
+  // to create an instance of the class (Movie::determineMovie(...))
+  static Movie *parseMovieInfo(std::string movieInfo);
 
   int getStock() const;
   void addStock(); // Adds 1 to stock
@@ -42,7 +47,7 @@ public:
   virtual bool operator>=(const Movie &rhs) const = 0;
 
   // << can't be overloaded as a pure virtual function.
-  virtual std::ostream &display(std::ostream &os) const = 0;
+  virtual std::ostream &display(std::ostream &os) const;
   friend std::ostream &operator<<(std::ostream &os, const Movie &movie);
 
 private:
@@ -68,7 +73,7 @@ public:
   bool operator<=(const Movie &rhs) const override;
   bool operator>=(const Movie &rhs) const override;
 
-  std::ostream &display(std::ostream &os) const override;
+  // std::ostream &display(std::ostream &os) const override;
 };
 
 class DramaMovie : public Movie {
@@ -83,7 +88,7 @@ public:
   bool operator<=(const Movie &rhs) const override;
   bool operator>=(const Movie &rhs) const override;
 
-  std::ostream &display(std::ostream &os) const override;
+  // std::ostream &display(std::ostream &os) const override;
 };
 
 class ClassicMovie : public Movie {
@@ -106,4 +111,20 @@ public:
 private:
   int releaseMonth;
   std::string majorActor;
+};
+
+/**
+ * =================================
+ * Factory Class for Movie
+ */
+#include <memory>
+
+class MovieFactory {
+public:
+  // static so we can call the method using the classname without needing
+  // to create an instance of the class (MovieFactory::determineMovie(...))
+
+  // Returns nullptr on invalid info. Otherwise, returns pointer to Movie
+  // (child) instance.
+  static Movie *determineMovie(std::string movieInfo);
 };
