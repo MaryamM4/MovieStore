@@ -9,6 +9,8 @@
 #include "movie.h"
 #include "operation.h"
 
+#include <set>
+
 class Inventory {
 public:
   Inventory();
@@ -25,10 +27,6 @@ public:
   close file
   */
   void buildInventory(std::fstream &infile);
-
-  // Gets a movie from the inventory
-  Movie *getMovie(Movie *movie);
-  Movie *getMovie(int movieID);
 
   // Borrow a movie from the inventory.
   // // Returns true if the movie was borrowed successfully, false otherwise.
@@ -62,5 +60,11 @@ public:
   void display();
 
 private:
-  HashTable<Movie> movies;
+  // HashTable<Movie> movies;
+  std::set<Movie *> movies;
+
+  // Returns pointer to movie in set.
+  // If movie DNE in set, returns nullptr.
+  Movie *getMovie(const Movie *movie) const;
+  Movie *getMovieByID(int ID) const;
 };

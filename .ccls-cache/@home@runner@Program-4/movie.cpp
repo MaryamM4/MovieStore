@@ -152,7 +152,7 @@ bool ComedyMovie::operator==(const Movie &rhs) const {
   // comedy movies (‘F’) sorted by Title, then Year it released
   const ComedyMovie &right = static_cast<const ComedyMovie &>(rhs);
   return this->getTitle() == right.getTitle() &&
-         this->getDirector() == right.getDirector()
+         this->getDirector() == right.getDirector() &&
          this->getReleaseYear() == right.getReleaseYear();
 }
 

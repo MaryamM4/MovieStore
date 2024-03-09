@@ -1,6 +1,11 @@
-//
-// Created by Andrew on 2/19/2024.
-//
+/**
+ * Operation
+ * ---------
+ * The child class determines the operation type,
+ * stores IDs of 
+ *
+ * 2/19/2024 -
+ */
 
 #include "operation.h"
 
@@ -49,7 +54,6 @@ int DisplayCustomerHistoryOperation::getCustomerID() const {
 }
 
 std::ostream &DisplayCustomerHistoryOperation::display(std::ostream &os) const {
-
   os << std::string("H ") << std::to_string(getCustomerID());
   return os;
 }

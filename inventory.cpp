@@ -7,7 +7,13 @@
 #include <string>
 
 Inventory::Inventory() {}
-Inventory::~Inventory() {}
+
+Inventory::~Inventory() {
+  for (auto *moviePtr : movies) {
+    delete moviePtr;
+  }
+  movies.clear();
+}
 
 void Inventory::buildInventory(std::fstream &infile) {
   Movie *newMovie;
@@ -22,10 +28,10 @@ void Inventory::buildInventory(std::fstream &infile) {
                 << std::endl;
 
     } else {
-      Movie *movieInTable = movies.getByID(newMovie->getID());
+      Movie *movieInTable = getMovieByID(newMovie->getID());
 
       if (movieInTable == nullptr) {
-        movies.add(newMovie);
+        movies.insert(newMovie);
 
       } else { // Movie already exists in HashTable
         if (movieInTable != newMovie) {
@@ -44,16 +50,16 @@ void Inventory::buildInventory(std::fstream &infile) {
 }
 
 /**
- * @return A pointer to a movie from the inventory
- *         or nullptr if movie not found.
- */
-Movie *Inventory::getMovie(Movie *movie) { return movies.get(movie); }
-Movie *Inventory::getMovie(int movieID) { return movies.getByID(movieID); }
-
-/**
+ * Prints all movies in set.
  *
+ * @pre Set orders movies first by kind.
  */
-void Inventory::display() { movies.display(); }
+void Inventory::display() {
+  for (auto *currMovie : movies) {
+    std::cout << *currMovie << std::endl;
+  }
+  std::cout << std::endl;
+}
 
 /**
  *
@@ -62,7 +68,8 @@ void Inventory::display() { movies.display(); }
  * @return True if movie was succesfully borrowed, or false otherwise.
  */
 bool Inventory::borrowMovie(BorrowOperation *op) {
-  Movie *movie = movies.getByID(op->getMovieID());
+  // Movie *movie = movies.getByID(op->getMovieID());
+  Movie *movie = getMovieByID(op->getMovieID());
 
   if (movie != nullptr) {
     // remStock subtracts 1 from stock.
@@ -83,7 +90,8 @@ bool Inventory::borrowMovie(BorrowOperation *op) {
  * @return True if movie was succesfully returned, or false otherwise.
  */
 bool Inventory::returnMovie(ReturnOperation *op) {
-  Movie *movie = movies.getByID(op->getMovieID());
+  // Movie *movie = movies.getByID(op->getMovieID());
+  Movie *movie = getMovieByID(op->getMovieID());
 
   if (movie != nullptr) {
     // Add 1 back to stock.
@@ -96,4 +104,30 @@ bool Inventory::returnMovie(ReturnOperation *op) {
   }
 
   return false;
+}
+
+/**
+ * @return Pointer to movie in set.
+ *         nullptr if movie DNE in set.
+ * @note Ternary operator syntax:
+ *       condition ? statement_if_true : statement_if_false
+ *       https://www.geeksforgeeks.org/cpp-ternary-or-conditional-operator/
+ */
+Movie *Inventory::getMovie(const Movie *movie) const {
+  auto it = movies.find(const_cast<Movie *>(movie));
+  return (it != movies.end()) ? *it : nullptr;
+}
+
+/**
+ * @return Pointer to movie in set.
+ *         nullptr if movie DNE in set.
+ */
+Movie *Inventory::getMovieByID(int ID) const {
+  for (auto *currMoviePtr : movies) {
+    if (currMoviePtr->getID() == ID) {
+      return currMoviePtr;
+    }
+  }
+
+  return nullptr;
 }

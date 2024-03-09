@@ -47,7 +47,7 @@ void Store::initFromFiles(std::string movies_filename,
 
   // Build operations vector
   std::cout << "\n===========================" << std::endl; // DELETE ME
-  std::cout << "======== OPERATIONS ========" << std::endl;  // DELETE ME
+  std::cout << "======= OPERATIONS ========" << std::endl;   // DELETE ME
   std::cout << "---------------------------\n" << std::endl; // DELETE ME
   file.open(operations_filename);
   if (file.is_open()) {
